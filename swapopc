@@ -1,0 +1,33 @@
+#include "monty.h"
+
+/**
+ * swap - swaps the top two elements of the stack
+ *
+ * @doubly: head of the linked list
+ * @p_opcode: line number
+ * Return: void, nothing to return
+ */
+void swap(stack_t **doubly, unsigned int p_opcode)
+{
+	int y = 0;
+	stack_t *aux = NULL;
+
+	aux = *doubly;
+
+	for (; aux != NULL; aux = aux->next, y++)
+		;
+
+	if (y < 2)
+	{
+		dprintf(2, "L%u: can't swap, stack too short\n", p_opcode);
+		free_opCode();
+		exit(EXIT_FAILURE);
+	}
+
+	aux = *doubly;
+	*doubly = (*doubly)->next;
+	aux->next = (*doubly)->next;
+	aux->prev = *doubly;
+	(*doubly)->next = aux;
+	(*doubly)->prev = NULL;
+}

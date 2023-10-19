@@ -1,0 +1,42 @@
+#include "monty.h"
+
+/**
+ * add - adds the top two elements of the stack
+ *
+ * @doubly: head of the linked list
+ * @p_opcode: line number;
+ * Return: void, nothing to return
+ */
+void add(stack_t **doubly, unsigned int p_opcode)
+{
+	int y = 0;
+	stack_t *aux = NULL;
+
+	aux = *doubly;
+
+	for (; aux != NULL; aux = aux->next, y++)
+		;
+
+	if (y < 2)
+	{
+		dprintf(2, "L%u: can't add, stack too short\n", p_opcode);
+		free_opCode();
+		exit(EXIT_FAILURE);
+	}
+
+	aux = (*doubly)->next;
+	aux->n += (*doubly)->n;
+	pop(doubly, p_opcode);
+}
+
+/**
+ * nop - doesn't do anythinhg
+ * @doubly: head of the linked list
+ * @p_opcode: line number;
+ * Return: void, nothing to return
+ */
+void nop(stack_t **doubly, unsigned int p_opcode)
+{
+	(void)doubly;
+	(void)p_opcode;
+}

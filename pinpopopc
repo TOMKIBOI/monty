@@ -1,0 +1,45 @@
+#include "monty.h"
+
+/**
+ * pint - prints the value at the top of the stack
+ *
+ * @doubly: head of the linked list
+ * @p_opcode: line number
+ * Return: void, nothing to return
+ */
+void pint(stack_t **doubly, unsigned int p_opcode)
+{
+	(void)p_opcode;
+
+	if (*doubly == NULL)
+	{
+		dprintf(2, "L%u: ", p_opcode);
+		dprintf(2, "can't pint, stack empty\n");
+		free_opCode();
+		exit(EXIT_FAILURE);
+	}
+
+	printf("%d\n", (*doubly)->n);
+}
+
+/**
+ * pop - removes the top element of the stack
+ *
+ * @doubly: head of the linked list
+ * @p_opcode: line number
+ * Return: void, nothing to return
+ */
+void pop(stack_t **doubly, unsigned int p_opcode)
+{
+	stack_t *aux;
+
+	if (doubly == NULL || *doubly == NULL)
+	{
+		dprintf(2, "L%u: can't pop an empty stack\n", p_opcode);
+		free_opCode();
+		exit(EXIT_FAILURE);
+	}
+	aux = *doubly;
+	*doubly = (*doubly)->next;
+	free(aux);
+}
