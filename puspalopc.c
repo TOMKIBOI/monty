@@ -1,60 +1,44 @@
 #include "monty.h"
 
 /**
- * _push - pushes an element to the stack
+ * push - a peogram that pushes the data.
+ * @stack: stacks.
+ * @value: integer.
  *
- * @doubly: head of the linked list
- * @line_number: line number
- * Return: void
+ * Return: returns new node.
  */
-void _push(stack_t **doubly, unsigned int line_number)
-{
-	int n, j;
 
-	if (!programContext.arg)
+void push(Stack *stack, int value)
+{
+	Node *new_node = (Node*)malloc(sizeof(Node));
+
+	if (new_node == NULL)
 	{
-		dprintf(2, "L%u: ", line_number);
-		dprintf(2, "usage: push integer\n");
-		free_programContext();
+		fprintf(stderr, "Error: Memory allocation failed.\n");
 		exit(EXIT_FAILURE);
 	}
-
-	for (j = 0; programContext.arg[j] != '\0'; j++)
-	{
-		if (!isdigit(programContext.arg[j]) && programContext.arg[j] != '-')
-		{
-			dprintf(2, "L%u: ", line_number);
-			dprintf(2, "usage: push integer\n");
-			free_programContext();
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	n = atoi(programContext.arg);
-
-	if (programContext.lifo == 1)
-		add_dnodeint(doubly, n);
-	else
-		add_dnodeint_end(doubly, n);
+	new_node->data = value;
+	new_node->next = stack->top;
+	stack->top = new_node;
+	stack->size++;
 }
 
+#include "monty.h"
+
 /**
- * _pall - prints all values on the stack
+ * pall - data palling.
+ * @stack: stacks.
  *
- * @doubly: head of the linked list
- * @line_number: line numbers
- * Return: void
+ * Return: returns current node.
  */
-void _pall(stack_t **doubly, unsigned int line_number)
+
+void pall(Stack *stack)
 {
-	stack_t *aux;
-	(void)line_number;
+	Node *current = stack->top;
 
-	aux = *doubly;
-
-	while (aux)
+	while (current != NULL)
 	{
-		printf("%d\n", aux->n);
-		aux = aux->next;
+		printf("%d\n", current->data);
+		current = current->next;
 	}
 }

@@ -1,45 +1,41 @@
 #include "monty.h"
 
 /**
- * _pint - prints the value at the top of the stack
+ * pint - prints the value at the top of the stack, followed by a new line.
+ * @stack: stacks.
  *
- * @doubly: head of the linked list
- * @line_number: line number
- * Return: void
+ * Return: top data.
  */
-void _pint(stack_t **doubly, unsigned int line_number)
-{
-	(void)line_number;
 
-	if (*doubly == NULL)
+void pint(Stack *stack)
+{
+	if (stack->size == 0)
 	{
-		dprintf(2, "L%u: ", line_number);
-		dprintf(2, "can't pint, stack empty\n");
-		free_programContext();
+		fprintf(stderr, "Error: can't pint an empty stack.\n");
 		exit(EXIT_FAILURE);
 	}
-
-	printf("%d\n", (*doubly)->n);
+	printf("%d\n", stack->top->data);
 }
 
-/**
- * _pop - removes the top element of the stack
- *
- * @doubly: head of the linked list
- * @line_number: line number
- * Return: void
- */
-void _pop(stack_t **doubly, unsigned int line_number)
-{
-	stack_t *aux;
+#include "monty.h"
 
-	if (doubly == NULL || *doubly == NULL)
+/**
+ * pop - a function that transfer the node.
+ * @stack: stacks
+ *
+ * Return: returns the data or Exit if failure.
+ */
+
+void pop(Stack *stack)
+{
+	Node *temp = stack->top;
+
+	if (stack->size == 0)
 	{
-		dprintf(2, "L%u: can't pop an empty stack\n", line_number);
-		free_programContext();
+		fprintf(stderr, "Error: can't pop an empty stack.\n");
 		exit(EXIT_FAILURE);
 	}
-	aux = *doubly;
-	*doubly = (*doubly)->next;
-	free(aux);
+	stack->top = stack->top->next;
+	free(temp);
+	stack->size--;
 }
