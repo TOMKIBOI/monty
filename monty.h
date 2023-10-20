@@ -1,12 +1,15 @@
 #ifndef _MONTY_H_
 #define _MONTY_H_
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
 #include <ctype.h>
 
 /**
@@ -20,10 +23,11 @@
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+        int n;
+        struct stack_s *prev;
+        struct stack_s *next;
 } stack_t;
+
 
 /**
  * struct instruction_s - opcode and its function
@@ -35,10 +39,23 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+        char *opcode;
+        void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+
+/**
+ * struct globals - global structure to use in the functions
+ * @lifo: is stack or queue
+ * @cont: current line
+ * @arg: second parameter inside the current line
+ * @head: doubly linked list
+ * @fd: file descriptor
+ * @buffer: input text
+ *
+ * Description: doubly linked list node structure
+ * for stack, queues, LIFO, FIFO
+ */
 typedef struct globals
 {
 	int lifo;
@@ -49,13 +66,47 @@ typedef struct globals
 	char *buffer;
 } global_t;
 
-extern global_t opCode;
+extern global_t programContext;
 
-void add(stack_t **doubly, unsigned int p_opcode)
-void nop(stack_t **doubly, unsigned int p_opcode)
-void pop(stack_t **doubly, unsigned int p_opcode)
-void pint(stack_t **doubly, unsigned int p_opcode)
-void pall(stack_t **doubly, unsigned int p_opcode)
-void push(stack_t **doubly, unsigned int p_opcode)
-void swap(stack_t **doubly, unsigned int p_opcode)
+/* mystr_fun.c */
+int _strcmp(char *s1, char *s2);
+int _sch(char *s, char c);
+char *_strtoky(char *s, char *d);
+
+/* doubly_fun.c */
+stack_t *add_dnodeint_end(stack_t **head, const int n);
+stack_t *add_dnodeint(stack_t **head, const int n);
+void free_dlistint(stack_t *head);
+
+/* malloc_fun.c */
+void *_calloc(unsigned int nmemb, unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
+/* get_function */
+void (*get_opcodes(char *opc))(stack_t **stack, unsigned int line_number);
+
+/* main.c */
+void free_programContext(void);
+void start_programContext(FILE *fd);
+FILE *check_input(int argc, char *argv[]);
+int main(int argc, char *argv[]);
+
+/* opcode_instructions */
+void _push(stack_t **doubly, unsigned int line_number);
+void _pall(stack_t **doubly, unsigned int line_number);
+void _pint(stack_t **doubly, unsigned int line_number);
+void _pop(stack_t **doubly, unsigned int line_number);
+void _swap(stack_t **doubly, unsigned int line_number);
+void _queue(stack_t **doubly, unsigned int line_number);
+void _stack(stack_t **doubly, unsigned int line_number);
+void _add(stack_t **doubly, unsigned int line_number);
+void _nop(stack_t **doubly, unsigned int line_number);
+void _sub(stack_t **doubly, unsigned int line_number);
+void _div(stack_t **doubly, unsigned int line_number);
+void _mul(stack_t **doubly, unsigned int line_number);
+void _mod(stack_t **doubly, unsigned int line_number);
+void _pchar(stack_t **doubly, unsigned int line_number);
+void _pstr(stack_t **doubly, unsigned int line_number);
+void _rotl(stack_t **doubly, unsigned int line_number);
+void _rotr(stack_t **doubly, unsigned int line_number);
 #endif
