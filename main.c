@@ -1,5 +1,6 @@
 #include "monty.h"
 
+global_t programContext;
 /**
 * free_programContext - frees the global variables
 *
